@@ -10,7 +10,7 @@ export const ContainerHeader = styled.div`
     align-items: center;
     h1#Logo {
         font-weight: bold;
-        color: ${({theme}) => theme.bgSecundary};
+        color: white;
         font-size: 20px;
         margin-left: 20px;
         cursor: pointer;
@@ -19,7 +19,7 @@ export const ContainerHeader = styled.div`
 
 export const MenuContainer = styled.div`
     width: calc(100% - 10px);
-    height: 60px;
+    height: 70px;
     background: ${({theme}) => theme.bgSecundary};
     display: flex;
     flex-direction: row;
@@ -40,20 +40,24 @@ export const MenuItem = styled.div<MenuProps>`
     margin-left: 10px;
     margin-right: 20px;
     justify-content: center;
-    color: ${(props) => props.active ? props.theme.bgPrimary : props.theme.textSecundary };
+    color: ${(props) => props.active ? props.theme.destacado : props.theme.textSecundary };
     cursor: pointer;
     font-weight: ${({active}) => active ? "bold" : "normal"};
-    border-bottom: ${({active, theme}) => active ? `3px solid ${theme.bgPrimary}` : "none"};
+    border-bottom: ${({active, theme}) => active ? `3px solid ${theme.destacado}` : "none"};
 
     &:hover {
-        border-bottom: ${({active, theme}) => active ? `3px solid ${theme.bgPrimary}` : `3px solid ${theme.textSecundary}`};
+        border-bottom: ${({active, theme}) => active ? `3px solid ${theme.destacado}` : `3px solid ${theme.textSecundary}`};
     }
 
     p{
         margin-left: 10px;
+        &::selection{
+            background: transparent;
+        }
     }
+    
 `;
 
 export const Container = styled.div`
-    height: 133px;
+    height: 143px;
 `;

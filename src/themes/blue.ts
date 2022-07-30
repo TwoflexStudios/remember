@@ -6,7 +6,8 @@ const BlueTheme: ITheme = {
     primary: "0060F0",
     secundary: "#019DDA",
     textPrimary: "black",
-    textSecundary: "#A6A2A2"
+    textSecundary: "#A6A2A2",
+    destacado: "#0060F0",
 }
 
 export default BlueTheme;

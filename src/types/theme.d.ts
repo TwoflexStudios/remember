@@ -7,6 +7,7 @@ interface ITheme {
     secundary: string;
     textPrimary: string;
     textSecundary: string;
+    destacado: string;
 }
 
 declare module 'styled-components'{

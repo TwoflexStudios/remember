@@ -4,12 +4,14 @@ import {
     Route
 } from 'react-router-dom'
 
-const Navigator = (props: any) => {
+const Navigator = ({children}: any) => {
     return (
         <BrowserRouter>
+            {children}
             <Routes>
-                <Route path='/' element={<h1></h1>} />
-                <Route path='/home' element={<h1> </h1>} />
+                <Route path='/' element={<h1>home</h1>} />
+                <Route path='/lembretes' element={<h1>lembretes</h1>} />
+                <Route path='/favoritos' element={<h1>favoritos</h1>} />
             </Routes>
         </BrowserRouter>
     )

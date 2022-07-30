@@ -14,14 +14,14 @@ const Container = styled.div`
     p {
         font-size: 16px;
         font-weight: bold;
-        color: ${({theme}) => theme.bgSecundary};
+        color: white;
         margin-right: 10px;
     }
 
     span {
         font-size: 18px;
         font-weight: bold;
-        color: ${({theme}) => theme.bgSecundary};
+        color: white;
         margin-right: 10px; 
     }
 
@@ -58,7 +58,7 @@ const StateItem = styled.div`
     
     &:hover {
         background: ${({theme}) => theme.bgPrimary};
-        color: ${({theme}) => theme.bgSecundary};;
+        color: white;
     }
 `;
 
