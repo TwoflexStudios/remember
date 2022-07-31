@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const ContainerHeader = styled.div`
     width: 100%;
     height: 70px;
-    background: ${props => props.theme.bgPrimary};
+    background: ${props => props.theme.headerPrimary};
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -20,11 +20,18 @@ export const ContainerHeader = styled.div`
 export const MenuContainer = styled.div`
     width: calc(100% - 10px);
     height: 70px;
-    background: ${({theme}) => theme.bgSecundary};
+    background: ${({theme}) => theme.headerSecundary};
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     padding-left: 10px;
+
+    #menu{
+        display: flex;
+        flex-direction: row;
+        height: 90%;
+    }
 `;
 
 type MenuProps = {
@@ -58,6 +65,52 @@ export const MenuItem = styled.div<MenuProps>`
     
 `;
 
+export const SearchBox = styled.div`
+    width: 300px;
+    height: 45px;
+    background: ${({theme}) => theme.bgSecundary};
+    margin-right: 20px;
+    border-radius: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    position: relative;
+
+    #icon {
+        position: absolute;
+        z-index: 10;
+        left: 20px;
+        color: ${({theme}) => theme.textSecundary};
+    }
+
+    #clear {
+        position: absolute;
+        z-index: 10;
+        right: 20px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        font-weight: bold;
+        color: ${({theme}) => theme.textSecundary};
+    }
+
+    input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: transparent;
+        outline: none;
+        text-align: center;
+        font-size: 13px;
+        color: ${({theme}) => theme.textSecundary};
+    }
+`;
+
 export const Container = styled.div`
     height: 143px;
+    background: ${({theme}) => theme.bg};
 `;

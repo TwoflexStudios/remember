@@ -1,8 +1,11 @@
 import 'styled-components';
 
 interface ITheme {
-    bgPrimary: string;
+    bg: string;
+    hoverChanel: string;
     bgSecundary: string;
+    headerPrimary: string;
+    headerSecundary: string;
     primary: string;
     secundary: string;
     textPrimary: string;

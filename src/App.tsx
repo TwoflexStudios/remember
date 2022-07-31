@@ -6,6 +6,8 @@ import BlueTheme from "./themes/blue";
 import DarkTheme from "./themes/dark";
 import './styles/app.css'
 import Footer from "./components/Footer";
+import BaseChanelContext from "./context/chanelContext";
+import FirebaseContext from "./context/firebase";
 
 function App() {
   const [theme, setTheme] = useState<"blue"|"dark">("blue")
@@ -20,10 +22,14 @@ function App() {
   },[])
   return (
       <ThemeProvider theme={theme === "blue" ? BlueTheme : DarkTheme}>
-        <Navigator>
-          <Header setTheme={setTheme} theme={theme}/>
-        </Navigator>
-        <Footer />
+        <FirebaseContext>
+          <BaseChanelContext>
+            <Navigator>
+              <Header setTheme={setTheme} theme={theme}/>
+            </Navigator>
+            <Footer />
+          </BaseChanelContext>
+        </FirebaseContext>
       </ThemeProvider>
   );
 }
