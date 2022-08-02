@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SearchBox } from "../../../components/Header/styles";
 import ProgramationItem from "../../../components/programationItem";
@@ -14,11 +14,20 @@ const ChanelScreen = (props:any) => {
     const [isFetching, setIsFetching] = useState(true);
     const navigator = useNavigate()
     const [search, setSearch] = useState("");
+    const [scrollTo, setScrollTo] = useState();
+    const timelineRef = useRef(null)
 
     useEffect(() => {
         setIsFetching(true)
         chanelContext.useFullChanelData(id_revel)
     },[])
+
+    useEffect(() => {
+      if(scrollTo){
+         const timeline = document.querySelectorAll(".timeline");
+         console.log(timeline)
+      }
+    },[scrollTo])
 
     useEffect(() => {
         setIsFetching(chanelContext.isFetchingFullChanel)
@@ -73,9 +82,9 @@ const ChanelScreen = (props:any) => {
                                        </SearchBox>
                                  </div>
                                  <div className="content">
-                                       <ScrollContainer horizontal={true} className="timeLine" hideScrollbars={true}>
-                                          {chanelContext.selectedChanel.schedules.map(item => <ProgramationItem key={item.startDate} {...item} />)}
-                                       </ScrollContainer>
+                                    <ScrollContainer horizontal={true} className="timeLine" hideScrollbars={true}>
+                                       {chanelContext.selectedChanel.schedules.map((item,index) => <ProgramationItem setScrollTo={setScrollTo} index={index} key={item.startDate} {...item} />)}
+                                    </ScrollContainer>
                                  </div>
                               </div>
                             </ProgramationSectionArea>

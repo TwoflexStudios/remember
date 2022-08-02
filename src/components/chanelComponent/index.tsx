@@ -1,11 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { ButtonChanel } from "./styles";
 import moment from "moment";
+import { useEffect, useState } from "react";
 moment.locale('pt-br');
 
 const ChanelComponent = (props:ChanelProps) => {
     const navigator = useNavigate();
-
+    const [currentProgram, setCurrentProgram] = useState("");
+    useEffect(() => {
+        getCurrentProgram()
+        setInterval(() => {
+            getCurrentProgram()
+        },1000)
+    },[])
     const getCurrentProgram = () => {
         const dataAtual = moment();
         let title = props.schedules[0].title;
@@ -18,7 +25,7 @@ const ChanelComponent = (props:ChanelProps) => {
                 title = item.title
             }
 
-            return null;
+            setCurrentProgram(title)
         })
 
         return title
@@ -30,7 +37,7 @@ const ChanelComponent = (props:ChanelProps) => {
             <p>{props.title}</p>
             <div>
                 <div id="live"></div>
-                <p id="chanel">{getCurrentProgram()}</p>
+                <p id="chanel">{currentProgram}</p>
             </div>
         </ButtonChanel>
     )

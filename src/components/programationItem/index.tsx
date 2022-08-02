@@ -59,7 +59,12 @@ const Container = styled.div<Props>`
     }
 `;
 
-const ProgramationItem = (props:ProgramationProps) => {
+interface IProgramationItemProps extends ProgramationProps{
+    index: number;
+    setScrollTo: any;
+}
+
+const ProgramationItem = (props:IProgramationItemProps) => {
 
     const channelContext = useContext(ChanelContext)
 
@@ -75,6 +80,7 @@ const ProgramationItem = (props:ProgramationProps) => {
 
         if(dataInicial <= dataAtual && dataAtual <= dataFinal){
             setIsCurrent(true)
+            props.setScrollTo(props.index)
         }else{
             setIsCurrent(false)
         }

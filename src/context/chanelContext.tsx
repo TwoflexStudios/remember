@@ -2,6 +2,11 @@ import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import api from "../services/api";
 
+
+declare interface CustomProgramationItem extends ProgramationProps {
+  chanel: ChanelProps;
+}
+
 declare interface IChanelContext {
     chanelList: ChanelProps[];
     state: number;
@@ -17,6 +22,7 @@ declare interface IChanelContext {
     useProgramation(programation: string): void;
     setSelectedProgramation: any;
     serachInProgramation(query:string): void;
+    resultSearchProgramation: CustomProgramationItem[];
 }
 
 export const ChanelContext = createContext({} as IChanelContext);
@@ -3872,6 +3878,8 @@ const BaseChanelContext = ({children}: any) => {
 
     const [copyOfSelectedChanel, setCopyOfSelectedChanel] = useState<ChanelProps>()
 
+    const [resultSearchProgramation, setResultSearchInProgration] = useState<CustomProgramationItem[]>([]);
+
     useEffect(() => {
         if(localStorage.getItem("@preferedLocale")){
           const savedData: any = localStorage.getItem("@preferedLocale");
@@ -3916,10 +3924,25 @@ const BaseChanelContext = ({children}: any) => {
     const search = (query: string) => {
         setChanelList(
           fullList.filter(item => 
-              item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-              item.schedules.find(item => item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
+              item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase())
             )
           )
+          
+          if(query.length > 4){
+            const resultProgramation:CustomProgramationItem[] = [];
+
+            fullList.map(item => {
+              item.schedules.map(sch => {
+                if(sch.title.toLowerCase().includes(query.toLocaleLowerCase())){
+                  resultProgramation.push({...sch, chanel: item})
+                }
+              })
+            })
+            
+            setResultSearchInProgration(resultProgramation)
+          }else{
+            setResultSearchInProgration([])
+          }
     }
 
     const serachInProgramation = (query: string) => {
@@ -3967,6 +3990,7 @@ const BaseChanelContext = ({children}: any) => {
             setState,
             isLoading,
             search,
+            resultSearchProgramation,
             useFullChanelData,
             selectedChanel,
             isFetchingFullChanel,
