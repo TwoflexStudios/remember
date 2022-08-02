@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import moment from 'moment'
+import { ChanelContext } from "../../context/chanelContext";
 moment.locale('pt-br');
 
 type Props = {
     current?: boolean;
     progress?: number;
+    activated?: boolean;
 }
 
 
@@ -19,7 +21,7 @@ const Container = styled.div<Props>`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-
+    border: ${({activated, theme}) => activated && "2px solid " + theme.secundary};
     position: relative;;
 
     #titulo{    
@@ -58,6 +60,8 @@ const Container = styled.div<Props>`
 `;
 
 const ProgramationItem = (props:ProgramationProps) => {
+
+    const channelContext = useContext(ChanelContext)
 
     const [isCurrent, setIsCurrent] = useState(false);
 
@@ -121,7 +125,9 @@ const ProgramationItem = (props:ProgramationProps) => {
     }
 
     return (
-        <Container current={isCurrent} progress={progress}>
+        <Container current={isCurrent} progress={progress} onClick={()=> {
+            channelContext.useProgramation(props.programId)
+        }} activated={channelContext.selectedProgramation?.ProgramID === props.programId}>
             {isCurrent &&
                 <div className="progress">
 

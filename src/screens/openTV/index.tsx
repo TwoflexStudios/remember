@@ -6,7 +6,9 @@ import { ContainerChanel } from "./styles";
 
 const OpenTVScreen = (props:any) => {
     const chanelContext = useContext(ChanelContext)
-    
+    useEffect(() => {
+        chanelContext.setSelectedProgramation()
+    },[])
     return (
         <Container>
            <PSection bold style={{marginBottom:10}}>Lista de Canais - {chanelContext.chanelList.length}</PSection>

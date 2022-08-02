@@ -11,7 +11,12 @@ declare interface IChanelContext {
     search(query: string): void;
     useFullChanelData(id_revel:string | number, onlyReturn?: boolean, dateStart?: Date | null, dateEnd?:Date | null): void;
     isFetchingFullChanel: boolean;
-    fetchChanels(): void; 
+    fetchChanels(): void;
+    selectedProgramation: FullProgramationProps | undefined;
+    isFetchingProgramation: boolean;
+    useProgramation(programation: string): void;
+    setSelectedProgramation: any;
+    serachInProgramation(query:string): void;
 }
 
 export const ChanelContext = createContext({} as IChanelContext);
@@ -3862,6 +3867,11 @@ const BaseChanelContext = ({children}: any) => {
     const [selectedChanel, setSeletedChanel] = useState<ChanelProps>()
     const [isFetchingFullChanel, setIsFetchingFullChanel] = useState(true);
 
+    const [selectedProgramation, setSelectedProgramation] = useState<FullProgramationProps>();
+    const [isFetchingProgramation, setIsFetchingProgramation] = useState(false);
+
+    const [copyOfSelectedChanel, setCopyOfSelectedChanel] = useState<ChanelProps>()
+
     useEffect(() => {
         if(localStorage.getItem("@preferedLocale")){
           const savedData: any = localStorage.getItem("@preferedLocale");
@@ -3892,8 +3902,15 @@ const BaseChanelContext = ({children}: any) => {
       }
       const chanelData = dataChanels.find(item => String(item.id) === String(channelID))
       setSeletedChanel(chanelData)
-
+      setCopyOfSelectedChanel(chanelData)
       setIsFetchingFullChanel(false)
+    }
+
+    const useProgramation = async (programation:string) => {
+      setIsFetchingProgramation(true);
+      const data = await api.get("/prd/Guide/programs/"+programation+"?adultPoster=false")
+      setSelectedProgramation(data.data)
+      setIsFetchingProgramation(false)
     }
 
     const search = (query: string) => {
@@ -3903,6 +3920,17 @@ const BaseChanelContext = ({children}: any) => {
               item.schedules.find(item => item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
             )
           )
+    }
+
+    const serachInProgramation = (query: string) => {
+      if(selectedChanel && copyOfSelectedChanel){
+        const result:any = copyOfSelectedChanel.schedules.filter(item => {
+          return item.title.toLowerCase().includes(query.toLowerCase())
+        });
+        console.log(copyOfSelectedChanel)
+        console.log(result)
+        setSeletedChanel({...copyOfSelectedChanel, schedules: result })
+      }
     }
 
     const fetchChanels = async () => {
@@ -3935,12 +3963,17 @@ const BaseChanelContext = ({children}: any) => {
             chanelList,
             fetchChanels,
             state,
+            setSelectedProgramation,
             setState,
             isLoading,
             search,
             useFullChanelData,
             selectedChanel,
-            isFetchingFullChanel
+            isFetchingFullChanel,
+            selectedProgramation,
+            isFetchingProgramation,
+            useProgramation,
+            serachInProgramation
         }}>
             {children}
         </ChanelContext.Provider>

@@ -20,6 +20,21 @@ export const Container = styled.div`
         border-radius: 10px;
         border: 3px solid ${({theme}) => theme.bg};
     }
+
+    #goBack{
+        width: 100px;
+        height: 30px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: ${({theme}) => theme.textPrimary};
+        cursor: pointer;
+        span{
+            margin-right: 10px;
+        }
+    }
 `;
 
 type PProps = {
