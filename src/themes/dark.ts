@@ -7,7 +7,7 @@ const DarkTheme: ITheme = {
     headerPrimary: "#202020",
     headerSecundary: "#2A2A2A",
     primary: "#4E72CE",
-    secundary: "#019DDA",
+    secundary: "#283E78",
     textPrimary: "#D1D1D1",
     textSecundary: "#D1D1D1",
     destacado: "#4E72CE",

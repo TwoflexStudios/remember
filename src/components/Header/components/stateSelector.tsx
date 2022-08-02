@@ -10,6 +10,14 @@ const Container = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+    div#drop {
+        width: auto;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    }
     cursor: pointer;
 
     p {
@@ -29,6 +37,10 @@ const Container = styled.div`
     .fa-sort-down{
         margin-right: 20px; 
         margin-top: -10px;
+    }
+    
+    .fa-sort-up{
+        margin-right: 20px; 
     }
 
 `;
@@ -153,24 +165,28 @@ const StateSelector = (props:any) => {
         setDroped(false)
         setCidades([])
         chanelsContext.setState(state.id_cidade)
+        chanelsContext.fetchChanels();
     }
 
     return (
-        <Container onClick={()=> setDroped(!droped)}>
-            <span className="fa-solid fa-location-dot" />
-            <p>{currentState.nome} - {currentState.uf}</p>
-            <span className="fa-solid fa-sort-down" />
+        <Container>
+            <div id="drop" onClick={()=> setDroped(!droped)}>
+                <span className="fa-solid fa-location-dot" />
+                <p>{currentState.nome} - {currentState.uf}</p>
+                {droped ?
+                    <span className="fa-solid fa-sort-up" />
+                    :
+                    <span className="fa-solid fa-sort-down" />
+                }
+            </div>
             {droped &&
                 <DropArea>
-                    {
-
-                    }
                     {fetching ?
                         <div style={{display:"flex", flex:1 ,justifyContent:"center", alignItems:"center", height:"100%"}}>Carregando</div>
                         : cidades.length === 0 ?
-                        states.map( item => <StateItem onClick={()=>{changeState(item)}}>{item.nome}</StateItem>)
+                        states.map( item => <StateItem key={item.id_cidade} onClick={()=>{changeState(item)}}>{item.nome}</StateItem>)
                         :
-                        cidades.map( item => <StateItem onClick={()=>{changeCity(item)}}>{item.nome}</StateItem>)
+                        cidades.map( item => <StateItem key={item.id_cidade} onClick={()=>{changeCity(item)}}>{item.nome}</StateItem>)
                     }
                 </DropArea>
             }

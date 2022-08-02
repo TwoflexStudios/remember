@@ -1,12 +1,17 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import api from "../services/api";
 
 declare interface IChanelContext {
     chanelList: ChanelProps[];
     state: number;
     setState: any;
     isLoading: boolean;
+    selectedChanel: ChanelProps | undefined;
     search(query: string): void;
+    useFullChanelData(id_revel:string | number, onlyReturn?: boolean, dateStart?: Date | null, dateEnd?:Date | null): void;
+    isFetchingFullChanel: boolean;
+    fetchChanels(): void; 
 }
 
 export const ChanelContext = createContext({} as IChanelContext);
@@ -3853,7 +3858,10 @@ const BaseChanelContext = ({children}: any) => {
     const [state, setState] = useState<number>(22);
     const [isLoading, setIsLoading] = useState(true)
     const [chanelList, setChanelList] = useState<ChanelProps[]>([]);
-    
+
+    const [selectedChanel, setSeletedChanel] = useState<ChanelProps>()
+    const [isFetchingFullChanel, setIsFetchingFullChanel] = useState(true);
+
     useEffect(() => {
         if(localStorage.getItem("@preferedLocale")){
           const savedData: any = localStorage.getItem("@preferedLocale");
@@ -3863,39 +3871,76 @@ const BaseChanelContext = ({children}: any) => {
         fetchChanels();
     },[])
 
-    useEffect(() => {
-      fetchChanels()
-    },[state])
+    const useFullChanelData = async (channelID:string | number, onlyReturn = false, dateStart: Date | null = null, dateEnd:Date | null = null) => {
+
+      let dataChanels = fullList;
+
+      if(fullList.length === 0){
+        const data = new Date();
+        const dia = data.getDate() < 10 ? "0" + data.getDate() : data.getDate();
+        const nextDay = (data.getDate() + 1) < 10 ? "0" + (data.getDate() + 1) : (data.getDate() + 1);
+        const mes = data.getMonth() < 10 ? "0" + (data.getMonth() + 1) : (data.getMonth() + 1);
+        const ano = data.getFullYear();
+        const result = await api.get("/prd/Guide/guides?dateIni="+ano+mes+dia+"030000&dateEnd="+ano+mes+nextDay+"030000&channelNum=1&channelName=1&numChannels=1000&retrievalDir=Forward&sortBy=ChlNumber&sortType=Asc&hideHD=false&hideSD=false&channelsOnly=true&timeZone=-00", {
+          headers: {
+              "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36",
+          }
+        })
+        setChanelList(result.data.content)
+        setFullList(result.data.content)
+        dataChanels = result.data.content
+      }
+      const chanelData = dataChanels.find(item => String(item.id) === String(channelID))
+      setSeletedChanel(chanelData)
+
+      setIsFetchingFullChanel(false)
+    }
 
     const search = (query: string) => {
-        setChanelList(fullList.filter(item => item.nome.toLocaleLowerCase().includes(query.toLocaleLowerCase())))
+        setChanelList(
+          fullList.filter(item => 
+              item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
+              item.schedules.find(item => item.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
+            )
+          )
     }
 
     const fetchChanels = async () => {
-        if(process.env.REACT_APP_EXEC_MODE === "dev"){
-            setChanelList(devList)
-            setFullList(devList)
-            setIsLoading(false)
-        }else{
-            setIsLoading(true)
-            const result = await axios.get("https://programacao.netcombo.com.br/gatekeeper/canal/select?q=id_cidade:"+String(state)+"&wt=json&rows=300&sort=nome%20asc", {
-                headers: {
-                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36",
-                }
-            })
-            setChanelList(result.data.response.docs)
-            setFullList(result.data.response.docs)
-            setIsLoading(false)
-        }
+      if(fullList.length > 0){
+        return;
+      } 
+      if(process.env.REACT_APP_EXEC_MODE === "dev"){
+          setIsLoading(false)
+      }else{
+          setIsLoading(true)
+          const data = new Date();
+          const dia = data.getDate() < 10 ? "0" + data.getDate() : data.getDate();
+          const nextDay = (data.getDate() + 1) < 10 ? "0" + (data.getDate() + 1) : (data.getDate() + 1);
+          const mes = data.getMonth() < 10 ? "0" + (data.getMonth() + 1) : (data.getMonth() + 1);
+          const ano = data.getFullYear();
+
+          const result = await api.get("/prd/Guide/guides?dateIni="+ano+mes+dia+"030000&dateEnd="+ano+mes+nextDay+"030000&channelNum=1&channelName=1&numChannels=1000&retrievalDir=Forward&sortBy=ChlNumber&sortType=Asc&hideHD=false&hideSD=false&channelsOnly=true&timeZone=-00", {
+              headers: {
+                  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36",
+              }
+          })
+          setChanelList(result.data.content)
+          setFullList(result.data.content)
+          setIsLoading(false)
+      }
     }
 
     return (
         <ChanelContext.Provider value={{
             chanelList,
+            fetchChanels,
             state,
             setState,
             isLoading,
-            search
+            search,
+            useFullChanelData,
+            selectedChanel,
+            isFetchingFullChanel
         }}>
             {children}
         </ChanelContext.Provider>

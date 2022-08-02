@@ -48,9 +48,9 @@ const Header = ({setTheme, theme, ...props} : Props) => {
                 <div style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
                     
                     {theme === "blue" ?
-                        <span className="fa-solid fa-moon" onClick={toggleTheme} style={{fontSize:20, marginRight:40, cursor:"pointer", color:"white"}}/>
+                        <span className="fa-solid fa-moon" onClick={toggleTheme} style={{fontSize:20, marginRight:20, cursor:"pointer", color:"white"}}/>
                         :
-                        <span className="fa-solid fa-sun" onClick={toggleTheme} style={{fontSize:20, marginRight:40, cursor:"pointer", color:"white"}}/>
+                        <span className="fa-solid fa-sun" onClick={toggleTheme} style={{fontSize:20, marginRight:20, cursor:"pointer", color:"white"}}/>
                     }
                     <StateSelector />
                 </div>
@@ -61,7 +61,7 @@ const Header = ({setTheme, theme, ...props} : Props) => {
                         <span className="fa-solid fa-house"/>
                         <p>Home</p>
                     </MenuItem>
-                    <MenuItem onClick={()=>gotoPath("/aberta")} active={currentPath === "/aberta"}>
+                    <MenuItem onClick={()=>gotoPath("/tvaberta")} active={currentPath === "/tvaberta"}>
                         <span className="fa-solid fa-tv"/>
                         <p>TV Aberta</p>
                     </MenuItem>
@@ -74,13 +74,15 @@ const Header = ({setTheme, theme, ...props} : Props) => {
                         <p>Favoritos</p>
                     </MenuItem>
                 </div>
-                <SearchBox>
-                    <span id="icon" className="fa-solid fa-search" />
-                    <input type="text" placeholder="Globo, SBT" onChange={e => setSearchValue(e.target.value)} value={searchValue} />
-                    {searchValue.length > 0 &&
-                        <span id="clear" onClick={()=>setSearchValue("")}>X</span>
-                    }
-                </SearchBox>
+                {currentPath === "/tvaberta" && 
+                    <SearchBox>
+                        <span id="icon" className="fa-solid fa-search" />
+                        <input type="text" placeholder="Globo, Flamengo, Vingadores" onChange={e => setSearchValue(e.target.value)} value={searchValue} />
+                        {searchValue.length > 0 &&
+                            <span id="clear" onClick={()=>setSearchValue("")}>X</span>
+                        }
+                    </SearchBox>
+                }
             </MenuContainer>
         </Container>
     )

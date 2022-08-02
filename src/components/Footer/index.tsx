@@ -10,6 +10,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     flex-direction: row;
+    justify-content: space-between;
     p {
         color: white;
         margin-left: 10px;
@@ -24,36 +25,37 @@ const Container = styled.div`
 `;
 
 const Footer = () => {
-    const [types, setTypes] = useState(["Weslley Araujo      ", "Twoflex Studios      "])
+    const [types, setTypes] = useState(["Weslley Araujo          ", "Twoflex Studios          "])
     const [typing, setTyping] = useState(types[0]);
-    const [currentTyping, setCurrentTyping] = useState(1);
+    const [currentTyping, setCurrentTyping] = useState(0);
     const [newType, setNewType] = useState(false)
 
-    // useEffect(() => {
-    //     if(newType){
-    //         if(typing !== types[currentTyping]){
-    //             setTimeout(() => {
-    //                 setTyping(typeing => types[currentTyping].substring(0, typeing.length + 1))
-    //             }, (200));
-    //         }else{
-    //             setNewType(false);
-    //         }
-    //     }else{
-    //         if(typing.length === 0){
-    //             setNewType(true)
-    //             setCurrentTyping(current => current === 0 ? 1 : 0)
-    //         }else{
-    //             setTimeout(() => {
-    //                 setTyping(typeing => typeing.substring(0, typeing.length - 1))
-    //             }, (30));
-    //         }
-    //     }
-    // },[typing, newType])
+    useEffect(() => {
+        if(newType){
+            if(typing !== types[currentTyping]){
+                setTimeout(() => {
+                    setTyping(typeing => types[currentTyping].substring(0, typeing.length + 1))
+                }, (200));
+            }else{
+                setNewType(false);
+            }
+        }else{
+            if(typing.length === 0){
+                setNewType(true)
+                setCurrentTyping(current => current === 0 ? 1 : 0)
+            }else{
+                setTimeout(() => {
+                    setTyping(typeing => typeing.substring(0, typeing.length - 1))
+                }, (30));
+            }
+        }
+    },[typing, newType])
 
 
     return (
         <Container>
             <p>Feito com ❤️ por <a href="https://www.linkedin.com/in/weslley-dev/" rel="noreferrer" target="_blank">{typing}</a></p>
+            <p style={{marginRight: 10}}>Assine <a href="https://skypacotes.com/" rel="noreferrer" target="_blank">SKY</a></p>
         </Container>
     )
 }

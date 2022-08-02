@@ -1,4 +1,31 @@
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
+
+const fade = keyframes`
+    0%{
+        opacity: 1;
+        box-shadow: 0px 0px 0px;
+    }
+
+    25%{
+        box-shadow: 0px 0px 0px 1px rgba(50, 168, 72,.3);
+    }
+
+    50%{
+        box-shadow: 0px 0px 0px 3px rgba(33, 237, 71,.5);
+        opacity: 0.5;
+        color: rgb(33, 237, 71)
+    }
+    
+    75%{
+        box-shadow: 0px 0px 0px 1px rgba(50, 168, 72,.3);
+    }
+
+    100%{
+        opacity: 1;
+        box-shadow: 0px 0px 0px;
+    }
+`;
+
 
 export const ButtonChanel = styled.div`
     width: 170px;
@@ -44,9 +71,17 @@ export const ButtonChanel = styled.div`
             color: ${({theme}) => theme.textSecundary};
             font-size: 13px;
         }
-        span {
-            color: red;
-            margin-right: 5px;
+        div#live {
+            color: green;
+            background-color: green;
+            border-radius: 100%;
+            display: fle;
+            justify-content: center;
+            align-items: center;
+            min-height: 5px;
+            min-width: 5px;
+            margin-right: 10px;
+            animation: ${fade} 3s ease-in-out infinite;
         }
     }
     
