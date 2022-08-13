@@ -52,7 +52,7 @@ const Header = ({setTheme, theme, ...props} : Props) => {
                         :
                         <span className="fa-solid fa-sun" onClick={toggleTheme} style={{fontSize:20, marginRight:20, cursor:"pointer", color:"white"}}/>
                     }
-                    <StateSelector />
+                    {/* <StateSelector /> */}
                 </div>
             </ContainerHeader>
             <MenuContainer>

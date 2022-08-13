@@ -27,7 +27,11 @@ const fade = keyframes`
 `;
 
 
-export const ButtonChanel = styled.div`
+type ButtonProps = {
+    favorited?: boolean;
+}
+
+export const ButtonChanel = styled.div<ButtonProps>`
     width: 170px;
     min-width: 170px;
     height: 170px;
@@ -44,11 +48,15 @@ export const ButtonChanel = styled.div`
     justify-content: space-around;
     padding: 10px;
     margin: 5px;
+    position: relative;
     margin-bottom: 10px;
 
     &:hover {
         transform: scale(1.01);
         background: ${({theme}) => theme.hoverChanel};
+        .favoriteChanel{
+            display: block;
+        }
     }
 
     img {
@@ -56,10 +64,17 @@ export const ButtonChanel = styled.div`
         height: 75px;
     }
 
-    p:nth-child(2){
+    p{
         font-weight: bold;
         font-size: 14px;
         color: ${({theme}) => theme.textPrimary};
+        text-align: center;
+    }
+
+    p:nth-child(2){
+        font-weight: bold;
+        font-size: 14px;
+        color: ${({theme}) => theme.textSecundary};
         text-align: center;
     }
 
@@ -83,6 +98,16 @@ export const ButtonChanel = styled.div`
             margin-right: 10px;
             animation: ${fade} 3s ease-in-out infinite;
         }
+    }
+
+    .favoriteChanel{
+        position: absolute;
+        right: 15px;
+        z-index: 99;
+        display: ${({favorited}) => favorited ? "block" : "none"};
+        top: 15px;
+        font-size: 18px;
+        color: ${({favorited, theme}) => favorited ? theme.primary : theme.textPrimary };
     }
     
 `;

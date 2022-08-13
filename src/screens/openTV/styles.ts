@@ -12,7 +12,11 @@ export const ContainerChanel = styled.div`
     }
 `;
 
-export const ProgramationItem = styled.div`
+type Props = {
+    favorited?: boolean;
+}
+
+export const ProgramationItem = styled.div<Props>`
     min-width: 350px;
     min-height: 95%;
     background: ${({theme}) => theme.bgSecundary};
@@ -22,10 +26,10 @@ export const ProgramationItem = styled.div`
     border-bottom: 3px solid ${({theme}) => theme.secundary};
     display: flex;
     flex-direction: row;
+    position: relative;
     align-items: center;
     cursor: pointer;
     &:hover {
-        transform: scale(1.01);
         background: ${({theme}) => theme.hoverChanel};
     }
     img{
@@ -33,6 +37,16 @@ export const ProgramationItem = styled.div`
         margin-left: 5px;
         margin-right: 10px;
         height: 80px;
+    }
+
+    .favoriteChanel{
+        position: absolute;
+        right: 15px;
+        z-index: 99;
+        top: 15px;
+        display: ${({favorited}) => favorited ? "block" : "none"};
+        font-size: 18px;
+        color: ${({favorited, theme}) => favorited ? theme.primary : theme.textPrimary };
     }
 
     div{

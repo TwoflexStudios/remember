@@ -2,14 +2,15 @@ import { useContext, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import moment from 'moment'
 import { ChanelContext } from "../../context/chanelContext";
+import { useFavorites } from "../../context/favoriteContext";
 moment.locale('pt-br');
 
 type Props = {
     current?: boolean;
     progress?: number;
     activated?: boolean;
+    favorited?: boolean;
 }
-
 
 const Container = styled.div<Props>`
     min-width: 370px;
@@ -22,7 +23,17 @@ const Container = styled.div<Props>`
     flex-direction: column;
     justify-content: space-around;
     border: ${({activated, theme}) => activated && "2px solid " + theme.secundary};
-    position: relative;;
+    position: relative;
+
+    .favoriteChanel{
+        position: absolute;
+        right: 15px;
+        cursor: default;
+        z-index: 99;
+        top: 15px;
+        font-size: 18px;
+        color: ${({favorited, theme}) => favorited ? theme.primary : theme.textPrimary}
+    }
 
     #titulo{    
         margin-left: 20px;
@@ -60,11 +71,13 @@ const Container = styled.div<Props>`
 `;
 
 interface IProgramationItemProps extends ProgramationProps{
+    idChanel: string | number;
     index: number;
     setScrollTo: any;
 }
 
 const ProgramationItem = (props:IProgramationItemProps) => {
+    const favorites = useFavorites();
 
     const channelContext = useContext(ChanelContext)
 
@@ -133,7 +146,12 @@ const ProgramationItem = (props:IProgramationItemProps) => {
     return (
         <Container current={isCurrent} progress={progress} onClick={()=> {
             channelContext.useProgramation(props.programId)
-        }} activated={channelContext.selectedProgramation?.ProgramID === props.programId}>
+        }} activated={channelContext.selectedProgramation?.ProgramID === props.programId} favorited={favorites.hasFavorited(props.programId)}>
+            <span className="fa-solid fa-heart favoriteChanel" onClick={async (e)=>{
+                e.stopPropagation();
+                const data = await channelContext.useProgramation(props.programId, true)
+                favorites.toggleFavorite(props.programId || "", "program", props.idChanel, data, props.startDate, props.duration)
+            }}></span>
             {isCurrent &&
                 <div className="progress">
 

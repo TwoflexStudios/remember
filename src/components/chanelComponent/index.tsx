@@ -2,11 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { ButtonChanel } from "./styles";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import { useFavorites } from "../../context/favoriteContext";
 moment.locale('pt-br');
 
 const ChanelComponent = (props:ChanelProps) => {
     const navigator = useNavigate();
     const [currentProgram, setCurrentProgram] = useState("");
+    const favorites = useFavorites();
     useEffect(() => {
         getCurrentProgram()
         setInterval(() => {
@@ -32,7 +34,13 @@ const ChanelComponent = (props:ChanelProps) => {
     }
 
     return (
-        <ButtonChanel onClick={() => navigator("/tvaberta/" + props.id)}>
+        <ButtonChanel onClick={(e) => {
+            navigator("/tvaberta/" + props.id)
+        }} favorited={favorites.hasFavorited(props.id)}>
+            <span className="fa-solid fa-heart favoriteChanel" onClick={(e)=>{
+                e.stopPropagation();
+                favorites.toggleFavorite(props.id, "chanel", props.id)
+            }}></span>
             <img src={"https://digitalapi.sky.com.br/logos/channels/"+props.channelNumber+".png"} alt={props.title + " logomarca"}/>
             <p>{props.title}</p>
             <div>

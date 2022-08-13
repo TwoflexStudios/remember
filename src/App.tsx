@@ -8,6 +8,7 @@ import './styles/app.css'
 import Footer from "./components/Footer";
 import BaseChanelContext from "./context/chanelContext";
 import FirebaseContext from "./context/firebase";
+import FavoriteContext from "./context/favoriteContext";
 
 function App() {
   const [theme, setTheme] = useState<"blue"|"dark">("blue")
@@ -24,10 +25,12 @@ function App() {
       <ThemeProvider theme={theme === "blue" ? BlueTheme : DarkTheme}>
         <FirebaseContext>
           <BaseChanelContext>
-            <Navigator>
-              <Header setTheme={setTheme} theme={theme}/>
-            </Navigator>
-            <Footer />
+            <FavoriteContext>
+              <Navigator>
+                <Header setTheme={setTheme} theme={theme}/>
+              </Navigator>
+              <Footer />
+            </FavoriteContext>
           </BaseChanelContext>
         </FirebaseContext>
       </ThemeProvider>

@@ -25,7 +25,6 @@ const ChanelScreen = (props:any) => {
     useEffect(() => {
       if(scrollTo){
          const timeline = document.querySelectorAll(".timeline");
-         console.log(timeline)
       }
     },[scrollTo])
 
@@ -49,7 +48,7 @@ const ChanelScreen = (props:any) => {
                               <span className="fa-solid fa-arrow-left"></span>
                               Voltar
                            </div>
-                           <PSection bold>Informações</PSection>
+                           <PSection bold>Informações do Canal</PSection>
                            <PanelInfo>
                               <BoxBorder>
                                  <img id="logoChanel" src={"https://digitalapi.sky.com.br/logos/channels/"+chanelContext.selectedChanel.channelNumber+".png"} alt="" />
@@ -83,7 +82,7 @@ const ChanelScreen = (props:any) => {
                                  </div>
                                  <div className="content">
                                     <ScrollContainer horizontal={true} className="timeLine" hideScrollbars={true}>
-                                       {chanelContext.selectedChanel.schedules.map((item,index) => <ProgramationItem setScrollTo={setScrollTo} index={index} key={item.startDate} {...item} />)}
+                                       {chanelContext.selectedChanel.schedules.map((item,index) => <ProgramationItem idChanel={chanelContext.selectedChanel?.id || ""} setScrollTo={setScrollTo} index={index} key={item.startDate} {...item} />)}
                                     </ScrollContainer>
                                  </div>
                               </div>

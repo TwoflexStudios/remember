@@ -6,10 +6,12 @@ import { ContainerChanel, ProgramationItem } from "./styles";
 import ScrollContainer from 'react-indiana-drag-scroll'
 import moment from 'moment'
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "styled-components";
 moment.locale('pt-br');
 
 const OpenTVScreen = (props:any) => {
     const chanelContext = useContext(ChanelContext)
+    const theme = useTheme();
     const navigator = useNavigate()
     useEffect(() => {
         chanelContext.setSelectedProgramation()
@@ -18,7 +20,7 @@ const OpenTVScreen = (props:any) => {
         <Container>
            {chanelContext.resultSearchProgramation.length > 0 &&
             <>
-                <PSection bold style={{marginBottom:10}}>Programas na TV - {chanelContext.resultSearchProgramation.length}</PSection>
+                <PSection bold style={{marginBottom:10}}>Programas na TV [ Hoje ] - {chanelContext.resultSearchProgramation.length}</PSection>
                 <ScrollContainer horizontal={true} className="timeLine" hideScrollbars={true} style={{width:"100%", height:150, marginBottom:20, display:"flex", flexDirection:"row"}}>
                     {chanelContext.resultSearchProgramation.map(item => 
                             {
@@ -31,7 +33,7 @@ const OpenTVScreen = (props:any) => {
                                 const fullData = dateStartString + " : " + dateEndString
                                 return (
                                     <ProgramationItem onClick={()=>{
-                                        navigator("/tvaberta/" + item.chanel.channelNumber)
+                                        navigator("/tvaberta/" + item.chanel.id)
                                     }}>
                                         <img src={"https://digitalapi.sky.com.br/logos/channels/"+item.chanel.channelNumber+".png"} alt={item.chanel.title + " logotipo"} />
                                         <div>
@@ -53,7 +55,7 @@ const OpenTVScreen = (props:any) => {
            }
 
            {!chanelContext.isLoading && chanelContext.chanelList.length === 0 && chanelContext.resultSearchProgramation.length === 0 &&
-            <div style={{flex: 1, height:"100%", display:"flex", justifyContent:"center", alignItems:"center"}}>
+            <div style={{flex: 1, height:"100%", display:"flex", justifyContent:"center", alignItems:"center", color: theme.textPrimary}}>
                 Nenhum resultado encontrado
             </div>
            }
